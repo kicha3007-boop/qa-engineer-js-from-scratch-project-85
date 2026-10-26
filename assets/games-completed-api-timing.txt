@@ -1,0 +1,20 @@
+Codebattle: время ответа GET https://codebattle.hexlet.io/api/v1/games/completed (список завершённых игр, 20 записей)
+Дата: 2026-10-26 19:14 UTC; клиент: Node.js v22.19.0 fetch; Windows 11 Pro 10.0.22000
+Запросы последовательные, по одному, с паузой 3 с (это не нагрузочный тест).
+
+запрос 1: HTTP 200, 5.83 с, 8018 байт
+запрос 2: HTTP 200, 4.54 с, 8018 байт
+запрос 3: HTTP 200, 4.59 с, 8018 байт
+запрос 4: HTTP 200, 22.67 с, 8018 байт
+запрос 5: HTTP 200, 6.80 с, 8018 байт
+
+Для сравнения, в тех же условиях:
+GET /api/v1/leaderboard/elo: HTTP 200, 1.44 с
+GET /api/v1/tasks: HTTP 200, 0.71 с
+GET /hall_of_fame: HTTP 200, 0.13 с
+GET /: HTTP 200, 0.22 с
+
+Запрос в том виде, как его отправляет вкладка истории игр профиля (frontend/src/features/profile/api.ts):
+GET /api/v1/games/completed?user_id=14968&page_size=20&page=1: HTTP 200, 2.95 с, игр в ответе: 20
+GET /api/v1/games/completed?user_id=14968&page_size=20&page=2: HTTP 200, 0.32 с, игр в ответе: 20
+GET /api/v1/games/completed?user_id=14968&page_size=20&page=3: HTTP 200, 0.39 с, игр в ответе: 20

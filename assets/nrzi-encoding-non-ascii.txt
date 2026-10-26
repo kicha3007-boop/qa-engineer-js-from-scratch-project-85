@@ -1,0 +1,46 @@
+Codebattle, задача nrzi_encoding (id 32, уровень easy): входные данные тестов содержат не-ASCII символ
+Дата: 2026-10-26; данные получены с прода: GET https://codebattle.hexlet.io/api/v1/tasks/32 (доступно без входа)
+
+Символы во входных данных всех 30 тестов:
+  "¯"  U+00AF  байт в UTF-8: 2
+  "|"  U+007C  байт в UTF-8: 1
+  "_"  U+005F  байт в UTF-8: 1
+
+Пример теста: solution("¯|___|¯¯¯¯¯|___|¯|_|¯") == "010010000100111"
+  символов: 21, байт в UTF-8: 29
+
+Одно и то же посимвольное решение (символ после "|" даёт 1, иначе 0) прогнано локально на всех тестах задачи:
+
+JavaScript (Node.js v22.19.0, строка индексируется по символам): passed 30 of 30
+
+C++ (g++ 14.2.0, std::string индексируется по байтам; запуск в Docker, Debian):
+FAIL arg=¯|___|¯¯¯¯¯|___|¯|_|¯ bytes=29 expected=010010000100111 got=00100100000000010010110
+FAIL arg=¯|__|¯|___|¯¯ bytes=17 expected=010110010 got=0010101001000
+FAIL arg=_|¯¯¯|_|¯¯¯¯|_|¯¯ bytes=26 expected=010011000110 got=010000011000000011000
+C++ (std::string bytes): passed 3 of 30
+
+Исходник C++:
+#include <fstream>
+#include <iostream>
+#include <string>
+std::string solution(const std::string& s) {
+  std::string r;
+  for (size_t i = 0; i < s.size(); i++) {
+    if (s[i] == '|') continue;
+    r += (i > 0 && s[i - 1] == '|') ? '1' : '0';
+  }
+  return r;
+}
+int main() {
+  std::ifstream in("cases.txt");
+  std::string line; int ok = 0, all = 0;
+  while (std::getline(in, line)) {
+    auto tab = line.find('\t');
+    std::string arg = line.substr(0, tab), exp = line.substr(tab + 1);
+    std::string got = solution(arg);
+    all++;
+    if (got == exp) ok++;
+    else if (all - ok <= 3) std::cout << "FAIL arg=" << arg << " bytes=" << arg.size() << " expected=" << exp << " got=" << got << "\n";
+  }
+  std::cout << "C++ (std::string bytes): passed " << ok << " of " << all << "\n";
+}

@@ -1,0 +1,111 @@
+---
+# Баг-репорты на упавшие кейсы из testing-report.yml.
+# Кейс «Сайт обслуживает 1000 одновременных пользователей без ошибок 5xx» не прогонялся (см. README), баг-репорта на него нет.
+# Версия Codebattle: строки «Current version: …» в подвале больше нет (по закрытому issue #2186 так задумано),
+# поэтому указана версия сборки фронтенда из поля "version" в data-page любой страницы и последний коммит master на момент проверки.
+
+- summary: |
+    В таблице лидеров сезона заголовки столбцов выводятся служебными именами полей (user_name, total_points, total_wins_count)
+  environment: |
+    Google Chrome 156.0.8078.47 (64 бит)
+    ОС Windows 11 Pro 10.0.22000
+    Окно браузера 1366x900
+    Codebattle https://codebattle.hexlet.io/, версия сборки bea05b21db2ee2a63311d6f9fc2faca8, последний коммит master 285744f (23.10.2026)
+    Пользователь не авторизован, язык интерфейса English
+  steps-to-reproduce: |
+    1. Открыть https://codebattle.hexlet.io/hall_of_fame
+    2. Посмотреть заголовки столбцов таблицы «Current Season Leaderboard»
+  expected-result: |
+    Заголовки — понятные слова: «Place», «Player», «Clan», «Points», «Wins», «Games», «Score», «Tournaments», «Avg place», «Best place», «Time»
+  actual-result: |
+    Заголовки выводятся служебными именами полей: place, user_name, clan_name, total_points, total_wins_count, total_games_count, total_score, tournaments_count, avg_place, best_place, total_time.
+    То же на странице сезона https://codebattle.hexlet.io/seasons/5 (таблица «Full Leaderboard»).
+    Скриншот: assets/hall-of-fame-columns-en.png
+
+- summary: |
+    При русском языке интерфейса заголовки столбцов таблицы лидеров сезона не переведены
+  environment: |
+    Google Chrome 156.0.8078.47 (64 бит)
+    ОС Windows 11 Pro 10.0.22000
+    Окно браузера 1366x900
+    Codebattle https://codebattle.hexlet.io/, версия сборки bea05b21db2ee2a63311d6f9fc2faca8, последний коммит master 285744f (23.10.2026)
+    Пользователь не авторизован
+  steps-to-reproduce: |
+    1. Открыть https://codebattle.hexlet.io/
+    2. В шапке нажать кнопку языка «EN» и выбрать «Русский»
+    3. Открыть https://codebattle.hexlet.io/hall_of_fame
+    4. Посмотреть заголовки столбцов таблицы «Таблица лидеров текущего сезона»
+  expected-result: |
+    Заголовки столбцов на русском: «Место», «Игрок», «Клан», «Очки», «Победы», «Игры» и т. д.
+  actual-result: |
+    Название таблицы, поиск («Поиск по имени...»), фильтры («Все кланы», «Все языки») и блоки страницы переведены, а заголовки столбцов остались служебными английскими именами: place, user_name, clan_name, total_points, total_wins_count, total_games_count, total_score, tournaments_count, avg_place, best_place, total_time.
+    Перевод заголовков таблицы «Зала славы» был частью закрытого issue https://github.com/hexlet-codebattle/codebattle/issues/2337 (шаг 5), исправление не подтвердилось.
+    Скриншот: assets/hall-of-fame-columns-ru.png
+
+- summary: |
+    Страница 404 выводится на английском при выбранном русском языке интерфейса
+  environment: |
+    Google Chrome 156.0.8078.47 (64 бит)
+    ОС Windows 11 Pro 10.0.22000
+    Окно браузера 1366x900
+    Codebattle https://codebattle.hexlet.io/, версия сборки bea05b21db2ee2a63311d6f9fc2faca8, последний коммит master 285744f (23.10.2026)
+    Пользователь не авторизован
+  steps-to-reproduce: |
+    1. Открыть https://codebattle.hexlet.io/
+    2. В шапке нажать кнопку языка «EN» и выбрать «Русский»
+    3. Открыть https://codebattle.hexlet.io/nonexistent-page
+  expected-result: |
+    Страница 404 на русском, например «Страница не найдена» и кнопка «На главную»
+  actual-result: |
+    Ответ 404, текст страницы на английском: «404», «Page not found», кнопка «Home»; у страницы атрибут lang="en", хотя на остальных страницах после выбора языка lang="ru".
+    Скриншот: assets/404-page-ru-locale.png
+
+- summary: |
+    На странице турнира название сезона выводится как «the 4 2026 season»
+  environment: |
+    Google Chrome 156.0.8078.47 (64 бит)
+    ОС Windows 11 Pro 10.0.22000
+    Окно браузера 1366x900
+    Codebattle https://codebattle.hexlet.io/, версия сборки bea05b21db2ee2a63311d6f9fc2faca8, последний коммит master 285744f (23.10.2026)
+    Пользователь не авторизован, язык интерфейса English
+  steps-to-reproduce: |
+    1. Открыть https://codebattle.hexlet.io/tournaments/5323 (турнир «Rookie», старт Oct 27, 2026 at 00:00)
+    2. Прочитать строку под описанием турнира
+  expected-result: |
+    Сезон назван так же, как на страницах сезонов: «Counts toward Season 4, 2026: the winner takes 8 season points.»
+  actual-result: |
+    Выведено «Counts toward the 4 2026 season: the winner takes 8 season points.» — номер сезона и год стоят подряд без слова Season и запятой, фраза читается как «четвёртый 2026-й сезон».
+    Скриншот: assets/tournament-season-label-en.png
+
+- summary: |
+    Тесты задачи nrzi_encoding содержат не-ASCII символ «¯», из-за чего верное посимвольное решение на C++ не проходит тесты
+  environment: |
+    Данные задачи: GET https://codebattle.hexlet.io/api/v1/tasks/32 (продакшен, без входа), 26.10.2026
+    Codebattle версия сборки bea05b21db2ee2a63311d6f9fc2faca8, последний коммит master 285744f (23.10.2026)
+    Прогон решений локально: Node.js 22.19.0; g++ 14.2.0 (Debian, Docker); ОС Windows 11 Pro 10.0.22000
+  steps-to-reproduce: |
+    1. Получить тесты задачи nrzi_encoding: GET https://codebattle.hexlet.io/api/v1/tasks/32, поле asserts (30 тестов)
+    2. Написать решение: идти по строке символ за символом, «|» пропускать, для остальных символов писать 1, если перед ним «|», иначе 0
+    3. Прогнать решение на JavaScript по всем 30 тестам
+    4. Прогнать то же решение на C++ (std::string) по всем 30 тестам
+  expected-result: |
+    Решение проходит все 30 тестов на обоих языках
+  actual-result: |
+    JavaScript: 30 из 30. C++: 3 из 30. Входные строки содержат символ «¯» (U+00AF), который в UTF-8 занимает 2 байта; в C++ std::string считает его двумя символами, и, например, для «¯|___|¯¯¯¯¯|___|¯|_|¯» (21 символ, 29 байт) решение возвращает 00100100000000010010110 вместо 010010000100111.
+    Баг уже описан в открытом issue https://github.com/hexlet-codebattle/battle_asserts/issues/1093.
+    Лог: assets/nrzi-encoding-non-ascii.txt
+
+- summary: |
+    Публичный API списка завершённых игр /api/v1/games/completed отвечает от 4,5 до 22,7 секунды
+  environment: |
+    Node.js 22.19.0 (fetch), ОС Windows 11 Pro 10.0.22000
+    Codebattle https://codebattle.hexlet.io/, версия сборки bea05b21db2ee2a63311d6f9fc2faca8, последний коммит master 285744f (23.10.2026)
+    26.10.2026, около 19:14 UTC; запросы по одному с паузой 3 с
+  steps-to-reproduce: |
+    1. Отправить GET https://codebattle.hexlet.io/api/v1/games/completed
+    2. Повторить запрос 5 раз с паузой 3 с, замеряя время ответа
+  expected-result: |
+    Ответ (20 игр, около 8 КБ) приходит быстрее 3 с, как у других публичных запросов (/api/v1/tasks — 0,7 с, /api/v1/leaderboard/elo — 1,4 с)
+  actual-result: |
+    Все ответы 200, но время 5,83 с; 4,54 с; 4,59 с; 22,67 с; 6,80 с. Тот же запрос с фильтром по игроку (?user_id=14968&page_size=20&page=1, так его отправляет вкладка истории игр в профиле) отвечает за 0,3–3,0 с, то есть медленный именно общий список без фильтра.
+    Лог: assets/games-completed-api-timing.txt

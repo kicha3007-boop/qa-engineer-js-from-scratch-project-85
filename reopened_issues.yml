@@ -1,0 +1,7 @@
+---
+# Закрытые как выполненные (state_reason: completed) issue, баг из которых на проде 26.10.2026 не исправлен.
+# #2337 — шаг 5: заголовки столбцов таблицы «Зала славы» при русском интерфейсе по-прежнему не переведены
+# (assets/hall-of-fame-columns-ru.png). Открытого дубликата нет; черновик нового issue со ссылкой на #2337 —
+# issue-drafts/leaderboard-columns-not-translated-ru.md. Остальные проверенные закрытые issue перечислены в README.
+issues:
+  - url: "https://github.com/hexlet-codebattle/codebattle/issues/2337"
