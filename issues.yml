@@ -2,7 +2,6 @@
 # Открытые баг-репорты, которые описывают баги, найденные при тестировании (bugreports.yml).
 # battle_asserts#1093 — не-ASCII символ «¯» в тестах задачи nrzi_encoding; на проде 26.10.2026 символ на месте,
 # посимвольное решение на C++ проходит 3 теста из 30 (assets/nrzi-encoding-non-ascii.txt).
-# Комментарий с уточнением окружения подготовлен в issue-drafts/comment-battle-asserts-1093.md.
-# На остальные найденные баги открытых issue нет — черновики новых issue лежат в issue-drafts/.
+# На остальные найденные баги открытых issue нет, они описаны в bugreports.yml.
 issues:
   - url: "https://github.com/hexlet-codebattle/battle_asserts/issues/1093"
